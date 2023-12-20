@@ -10,6 +10,7 @@
     "prettier": "3.2.5"
   },
   "scripts": {
+    "generate-docs": "node docs/generate-docs.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
