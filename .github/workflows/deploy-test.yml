@@ -1,0 +1,20 @@
+name: Buntnis-Deployment Test
+
+on:
+  push:
+    branches:
+      - "demo"
+
+jobs:
+  build:
+    name: Bauen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abhängigkeiten laden
+        run: npm ci
+      - uses: actions/upload-artifact@master
+        with:
+          name: result
+          path: dist/
+

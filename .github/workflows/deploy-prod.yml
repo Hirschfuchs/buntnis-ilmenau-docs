@@ -1,0 +1,22 @@
+name: Buntnis-Deployment Prod
+
+on:
+  push:
+    branches:
+      - "production"
+
+jobs:
+  build:
+    name: Bauen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abhängigkeiten laden
+        run: npm ci
+      - name: Dokumentation bauen
+        run: npm run generate-docs
+      - uses: actions/upload-artifact@master
+        with:
+          name: result
+          path: dist/
+
