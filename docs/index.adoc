@@ -53,6 +53,6 @@ als auch für unsere Mitglieder (Mailverteiler, Protokoll ...)
 
 === Dokumente
 
-* xref:{docdir}/dokumentation/index.adoc[Aufbau der Dokumentation]
-* xref:{docdir}/sicherheit/index.adoc[Sicherheitskonzept]
-* xref:{docdir}/mail/index.adoc[E-Mail-Konzept]
+* xref:dokumentation/index.adoc[Aufbau der Dokumentation]
+* xref:sicherheit/index.adoc[Sicherheitskonzept]
+* xref:mail/index.adoc[E-Mail-Konzept]
