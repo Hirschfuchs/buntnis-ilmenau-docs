@@ -32,6 +32,7 @@ Benötigt werden drei Adressen:
 
 Diese haben unterschiedliche Anforderungen, wer an sie senden kann und an wen sie weiterleiten.
 
+[#mail-adresses-info]
 ==== Info
 
 Jeder -> `info@buntnis-ilmenau.de` -> Liste[ausgewählte Buntnis-Mitglieder]
@@ -41,6 +42,7 @@ Sie empfängt daher von beliebigen Mailadressen Mails und leitet diese an die Bu
 Das Versenden von der Info-Adresse soll auch möglich sein.
 Dazu sind SMTP-Daten notwendig, die derzeit nur an einen kleinen Personenkreis ausgegeben werden sollen.
 
+[#mail-adresses-intern]
 ==== Intern
 
 Liste[Alle Mitglieder] -> `intern@buntnis-ilmenau.de` -> Liste[Alle Mitglieder]
@@ -48,6 +50,7 @@ Liste[Alle Mitglieder] -> `intern@buntnis-ilmenau.de` -> Liste[Alle Mitglieder]
 Die interne Adresse ist die Möglichkeit, dass Buntnis-Mitglieder alle anderen Buntnis-Mitglieder erreichen können.
 So sind Sender- und Empfänger-Liste hier identisch.
 
+[#mail-adresses-extern]
 ==== Extern
 
 Liste[ausgewählte Buntnis-Mitglieder] -> `news@buntnis-ilmenau.de` -> Liste[jeder Interessierte]
@@ -57,6 +60,35 @@ Da diese Interessierten eine Mail von der offiziellen `buntnis-ilmenau.de`-Domai
 Insgesamt sollte auf dieser Adresse Disziplin herrschen, sodass pro Monat maximal 2-3 Mails vom Buntnis gesendet werden.
 Alles andere ist unnötige Belastung für die Abonnenten des Buntnis.
 
+[#mail-defined-adresses]
+=== Definierte Mail-Adressen
+
+Neben unseren Verteilern werden im Buntnis noch einige weitere Adressen genutzt:
+
+
+|===
+|Adresse |Zweck
+
+|info@buntnis-ilmenau.de
+|siehe <<mail-adresses-info,Info-Adresse>>
+
+|intern@buntnis-ilmenau.de
+|siehe <<mail-adresses-intern,Interne-Adresse>>
+
+|news@buntnis-ilmenau.de
+|siehe <<mail-adresses-extern,Externe/News-Adresse>>
+
+|tech@buntnis-ilmenau.de
+|Technische Adresse für Logins auf Technischen Umsystemen, wie Google Workspace
+
+|datenschutz@buntnis-ilmenau.de
+|Datenschutzadresse - Umleitung auf Datenschutzverantwortlichen
+
+|[.line-through]#buntnis@gmail.com#
+|Einfache GMail-Adresse (Keine Anbindung an Google Workspace)
+|===
+
+
 === Technische Komponenten
 
 Die Domain nimmt alle Mails entgegen, die an eine `@buntnis-ilmenau.de`- oder `@buntnis.de`-Adresse gerichtet sind.
@@ -64,4 +96,23 @@ Die Domain nimmt alle Mails entgegen, die an eine `@buntnis-ilmenau.de`- oder `@
 
 An dieser Stelle kann ein SMTP-Relay-Service eingebunden werden, der die Nachrichten entgegennimmt und nach bestimmten Regeln weiterleitet.
 
-=== Anleitung zum Aufsetzen des Mail-Systems
+Wir nutzen Google Workspace.
+
+==== Einrichtung von Google Workspace
+
+Beim ersten Betreten der Admin-Konsole, dem zentralen Verwaltungstool, wird man durch den Prozess geführt.
+Zunächst müssen DNS-Einträge angepasst werden.
+
+In Google Workspace ist alles über Nutzer und Gruppen aufgebaut.
+Jedes Buntnis-Mitglied mit eigener Mail-Adresse wird einen eigenen Nutzer erhalten.
+Für alle anderen Mail-Adressen werden Gruppen definiert.
+Es wird einen technischen Verwaltungsnutzer geben, der Einstellungen anpassen kann und einen technischen Readonly-Nutzer, der den Workspace lediglich betrachten kann.
+Dieser wird für die meisten Mitglieder über die Passwort-Datenbank bereitgestellt.
+
+===== Catch-All
+
+Alle Mails, die nicht an eine unserer <<mail-defined-adresses,definierten Mailadressen>>, wohl aber im Namespace `buntnis-ilmenau.de` verschickt werden, können in einer `Catch-All`-Mailadresse gesammelt werden.
+//TODO hier auch buntnis.de aufnehmen
+Siehe https://support.google.com/a/answer/12943537?hl=en[Google Dokumentation]
+
+Unsere Catch-All-Adresse ist `sonstige@buntnis-ilmenau.de`.
