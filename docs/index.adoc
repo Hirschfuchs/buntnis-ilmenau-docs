@@ -54,5 +54,6 @@ als auch für unsere Mitglieder (Mailverteiler, Protokoll ...)
 === Dokumente
 
 * xref:dokumentation/index.adoc[Aufbau der Dokumentation]
+* xref:adr/index.adoc[ADRs]
 * xref:sicherheit/index.adoc[Sicherheitskonzept]
 * xref:mail/index.adoc[E-Mail-Konzept]

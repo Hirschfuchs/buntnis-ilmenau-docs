@@ -1,0 +1,12 @@
+== Mailersend
+
+Wir nutzen MailerSend durch das gute kostenfreie Angebot, viele für uns passende Optionen, eine übersichtliche Oberfläche und Integrationen, wie Pipedream.
+
+=== Einrichtung & Konfiguration Mailersend
+
+Um Mailersend benutzen zu können, müssen die Mails, die an unsere Domain versendet werden, an die Server von Mailersend geroutet werden.
+Dazu müssen die DNS-Records angepasst werden.
+Nach dem Login über unser Passwort können die anzupassenden Einträge unter `Email` -> `Domains` -> `Domain verification` nachvollzogen werden.
+Wurden die DNS Einträge hinzugefügt und von Mailersend bestätigt, gelangt man zur Domain-Übersicht.
+
+Dort können nützliche Einstellungen, wie der Link und die Seite zum Abbstellen der Mails, angepasst werden.

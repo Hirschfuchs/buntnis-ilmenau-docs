@@ -1,0 +1,31 @@
+== Forward Email
+
+Wir nutzen `Forward Email`.
+
+=== Einrichtung & Konfiguration von Forward Email
+
+Durch die Einrichtung wird man weitgehend geführt.
+Nach Angabe der Domain (`buntnis-ilmenau.de`) bittet das System um die Ergänzung einiger DNS-Einträge.
+Hierbei werden die alten MX-Einträge gelöscht.
+Unsere bisherige Mail-Verwaltung über Netcup wurde dabei überschrieben:
+
+|===
+|Host |Prio |Destination
+
+|@
+|10
+|mail.buntnis-ilmenau.de
+
+|@
+|50
+|mx2fc3.netcup.net
+|===
+
+Sollte der Service gewechselt werden, müssen die alten Einträge unbedingt wieder ergänzt werden, da sonst keine Mails mehr versendet werden können!
+
+CAUTION: Die alten MX-Records müssen verpflichtend entfernt werden, da sonst die Möglichkeit einer Zustellung auf den alten Server nicht ausgeschlossen werden kann
+
+Die korrekte Konfiguration kann geprüft werden: https://www.whatsmydns.net/#MX/buntnis-ilmenau.de[MX] & https://www.whatsmydns.net/#TXT/buntnis-ilmenau.de[TXT]
+
+Danach führt einen der Prozess zur SMTP-Einrichtung.
+Dadurch können Mails von `@buntnis-ilmenau.de`-Adressen versendet werden.

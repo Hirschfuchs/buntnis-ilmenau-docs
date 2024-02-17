@@ -1,0 +1,126 @@
+== ADR: Mail-Services
+
+Als Bündnis wollen wir einen Mailverteiler haben, der bestimmte Aufgaben erfüllen soll (siehe xref:../mail/index.adoc[Mail-Dokumentation]).
+Dazu wurden einige Dienste und Optionen getestet und zunächst auch einige falsche Ansätze verfolgt.
+Dieser ADR dokumentiert deshalb den Entscheidungsweg und begründet die letztliche Entscheidung.
+
+=== Begrifflichkeit
+
+Mailverteiler::
+Der Begriff des Mailverteilers, wenn auch umgangssprachlich oft genutzt, meint eigentlich etwas anderes.
+Ein Mailverteiler ist eine Adresse, über die mehrere Adressen erreicht werden können.
+Zum einen beinhaltet dies meistens keine Regeln, da es einfach nur eine Komfortfunktion ist.
+Zum anderen ist dies oft ein Client-seitiges Feature.
+Wir benötigen etwas, das Mails entgegennimmt, die Absenderadresse prüft und eine entsprechende Antwort liefert - entweder eine Verteilung an alle aktuellen(!) Zieladressen oder eine negative Antwort an den Absender.
+SMTP-Relay::
+.Ein solcher Relay-Server übernimmt genau die Aufgabe, die wir stellen:
+[quote,Wikipedia]
+Als SMTP-Relay-Server, Mail-Relay-Server oder Smarthost wird ein Mail-Server (B) bezeichnet, der von einem Sender (A) E-Mails annimmt und an beliebige Dritte (C) weiterleitet.
+
+Dabei kann er Regeln nutzen, um nur von berechtigten Sendern (A) an berechtigte Empfänger (C) zu versenden.
+Leider war die Suche nach SMTP-Relay-Server-Anbietern oder -Produkten nicht zufriedenstellend.
+Viele der Anbieter bieten ein sehr großes Spektrum an Funktionalitäten, die wir nicht benötigen, insbesondere für das Versenden von Marketing-Mails, und verlangen dafür hohe Summen.
+Es kann dennoch für zukünftige Suchen ein guter Suchbegriff sein.
+Mail-Forwarding::
+Ein sehr viel simplerer Ansatz ist eigentlich das Mail-Forwarding.
+Hier geht es um das generelle client- oder serverseitige Weiterleiten von Mails.
+Bei der Suche nach Anbietern von Mailforwarding kamen allerdings sehr vielversprechende und günstige Ergebnisse heraus.
+Diese sind jedoch oft nur auf private Nutzung beschränkt.
+Dementsprechende Vorsicht ist bei der Wahl von Optionen geboten.
+Bulk-Email::
+Bulkmails beschreiben Mails, die an eine große Gruppe Empfänger gesendet werden.
+Sie inkludieren i.d.R. geschäftliche und informative Massenmails.
+Hier ist, neben den hohen Preisen, aber auch auf die Fähigkeit der regelbasierten Entgegennahme von Mails zu achten.
+
+=== Anforderungen
+
+Unsere Anforderungen lassen sich auf folgende Punkte herunterbrechen:
+
+Empfänger-Liste::
+Wir benötigen einen Service, der Mails an eine Liste von Empfängern versenden kann.
+Sender-Prüfung::
+Es muss für 2 der 3 Verteiler geprüft werden, von wem eine Mail an die Adresse geschickt wurde.
+Daher muss es möglich sein, den Absender mit einer Liste genehmigter Absender zu vergleichen.
+Listen-Verwaltung/API::
+Wir wollen diese beiden Listen möglichst nicht händisch verwalten.
+Daher sollte ein Tool in der Lage sein, über eine Anmeldeseite, API oder ähnliches zu verwalten, wer auf welcher Liste steht.
+Alternative könnte hier die Möglichkeit eines entsprechenden Nutzers sein, sodass es mehrere unserer Mitglieder über eine administrative Ansicht verwalten können.
+Optimum wäre beides, insbesondere ein unabhängiger "Abmelden"-Link in jeder Mail.
+Eigene Domain::
+Wir haben `buntnis-ilmenau.de`-Adressen. Diese sollten wir nutzen können.
+Kostenpunkt::
+Ein kostenfreier Service wäre wünschenswert.
+Nichtsdestotrotz wäre auch eine kleine Summe tragbar.
+Eine absolute Obergrenze von 5€/Monat scheint für unsere Zwecke sinnvoll.
+Mailing Liste::
+Listen, die das Versenden von Material an mehrere Empfänger ermöglichen.
+Suchergebnisse sehen hier ganz gut aus, wenn auch ohne Prüfung des Absenders.
+
+=== Getestete Produkte
+
+==== Amazon SES
+
+Zunächst wurde Amazons Simple Email Service über AWS getestet.
+Ziel war hier eine möglichst kostengünstige und skalierbare Lösung zu verwenden.
+AWS rechnet im Regelfall nach Nutzung ab, sodass bei unseren erwarteten Versandmengen Centbeträge herauskommen, gleichzeitig aber auch bei außergewöhnlich hohem Traffic skaliert wird, anstatt den Versand zu verweigern.
+
+SES wurde bereits zum Teil dokumentiert: xref:001-assets/doku-ses.adoc[SES Doku]
+
+Leider fiel erst sehr spät auf, dass SES in Europa zum aktuellen Zeitpunkt nur Mails versenden, nicht aber empfangen kann.
+Somit ist das Produkt für uns nicht nutzbar.
+
+==== Eigene Server-Lösung
+
+Es wurde ein einfacher V-Server aufgesetzt, auf dem über ein Docker-Image o.Ä. eine Mailverwaltung laufen sollte.
+Dieser Ansatz wurde allerdings verworfen, da es langfristig administrativen Aufwand bedeutet und regelmäßig ein Heartbeat geprüft werden müsste.
+Weiterhin ist das Setup sehr komplex, Beispiel: https://docs.mailman3.org/en/latest/install/virtualenv.html#virtualenv-install[Mailman]
+
+==== MailerSend
+
+Ebenfalls umfassend getestet und dokumentiert wurde MailerSend.
+Dieser Service bietet ein vergleichsweise umfangreiches kostenfreies Paket: Nicht nur sind 3000 Mails/Monat ein guter Wert für ein kostenloses Paket — die Möglichkeit, für 1$ um 1000 Mails zu erweitern macht das Produkt gut skalierbar.
+Weiterhin sind Use Cases wie unserer beworben.
+Nach einiger Setup-Zeit und einem bereits konfigurierten Mail-Template stellte sich allerdings heraus, dass das Inbound Routing, das den Empfang und das regelbasierte Weiterleiten ermöglicht, ein kostenpflichtiges Zusatzfeature ist.
+Mit einem Preis von 22 - 27€/Monat ist das Produkt nicht für das Bündnis geeignet.
+
+Die Einrichtung wurde dokumentiert: xref:001-assets/doku-mailersend.adoc[Mailersend Doku]
+
+==== Forward Email
+
+Forward Email scheint genau das zu bieten, was wir suchen - ein regelbasiertes Mail-Forwarding mit API und ohne zusätzlichen Schnickschnack.
+Es ist zwar kostenpflichtig, bietet aber nicht nur Einsicht auf den Source Code, sondern mit 3€/Monat und 6000 Mails den besten Preis, den ich am Markt finden konnte und einen für uns durchaus angemessenen.
+Desweiteren bietet es den mit Abstand angenehmsten und einfachsten Onboarding-Prozess aller getesteten Produkte.
+Leider stellt sich auch hier ein Haken: der Service funktioniert zwar gut, jedoch untersagen die Nutzungsbedingungen den Versand von Massen-Emails/Mails gleichen Inhalts an verschiedene Empfänger.
+
+Die Einrichtung wurde dokumentiert: xref:001-assets/doku-forward.adoc[Mailersend Doku]
+
+Für den ebenfalls sehr günstigen Anbieter https://www.pobox.com/[Pobox] gilt das gleiche - der gut geeignete SMTP-Service ist nur für private Nutzungen gestattet.
+
+==== Mailman/Mlmmj Hosts
+
+Da Mailman ein angenehmes Tool mit hohem Initial- und Wartungsaufwand ist, liegt die Idee nahe, für genau jene Aufgaben zu zahlen.
+Es gibt eine Liste von möglichen Hosts: https://wiki.list.org/COM/Mailman%20hosting%20services
+
+https://www.mailmanlists.net[MailmanLists] hat einen niedrigen Preis/Liste, aber für alle 3 doch einen recht hohen.
+
+Auch `Mlmmj` scheint ein angenehmes Tool zu sein.
+Aber auch hier finde ich keine Informationen, wer es unterstützt und wer nicht, geschweige denn einer managed Lösung.
+
+https://portal.eukhost.com
+
+==== Google Workspace
+
+Google hat mit seinem Workspace eine einfache Variante geschaffen, um kleine Unternehmen oder Organisationen mit grundlegenden Tools auszustatten.
+Hier enthalten sind unter anderem eine auf Gmail basierende Mail-Verwaltung, ein Kalender und ein Pad.
+Alles Dinge, die wir im Buntnis haben und nutzen wollen.
+Daher ist es trotz seiner 6€ Nutzungsgebühren pro Monat ein gutes, umfassendes Angebot für uns.
+
+Der Aufbau ist anders als bei den anderen Produkten - Google setzt sehr auf sein Ökosystem und verkleidet so beispielweise Postfächer in Nutzern und Gruppen.
+Dennoch kann, da jeder Nutzer und jede Gruppe eine `@buntnis-ilmenau.de`-Adresse hat, auch hier ein Mail-Verwaltungssystem geschaffen werden.
+Google bietet sehr komplexe Einstellungen fürs Routing und scheint sehr gnädig zu sein, was die Menge an umgeleiteten Nachrichten angeht.
+Der einzige schwierigere Punkt ist das Hinzufügen neuer und Entfernen alter Mitglieder.
+Hier könnte es nötig sein, dass Administratoren Änderungen vornehmen.
+Da diese allerdings neue Administratoren bestimmen können, sollte auf jeden Fall das bisherige Problem gelöst sein.
+
+Die Tests erweisen sich bislang als erfolgversprechend.
+Die Entscheidung fällt auf Google Workspace.

@@ -1,0 +1,7 @@
+= ADRs
+
+Any Decision Records dokumentieren technische Entscheidungen.
+
+== Liste von Buntnis-ADRs
+
+* xref:001-mail.adoc[ADRs]
