@@ -16,5 +16,8 @@
     "Documentation"
   ],
   "author": "Bono Fox",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "asciidoctor": "3.0.4"
+  }
 }
