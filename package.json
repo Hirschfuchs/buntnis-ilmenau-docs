@@ -1,0 +1,19 @@
+{
+  "name": "buntnis-docs",
+  "version": "1.0.0",
+  "description": "Dokumentation des Buntnis Ilmenau",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Documentation"
+  ],
+  "author": "Bono Fox",
+  "license": "ISC"
+}
