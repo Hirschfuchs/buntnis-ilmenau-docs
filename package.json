@@ -18,6 +18,7 @@
   "author": "Bono Fox",
   "license": "ISC",
   "dependencies": {
-    "asciidoctor": "3.0.4"
+    "asciidoctor": "3.0.4",
+    "glob": "10.3.10"
   }
 }
